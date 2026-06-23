@@ -1,0 +1,269 @@
+---
+redirect_from: sterkfontein/
+---
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>The Sterkfontein Caves Dataset</title>
+
+  <style>
+    /* Dark "cave" theme: near-black background, warm limestone text,
+       amber torchlight accents. */
+    body {
+      padding: 1em;
+      color: #cfc8be;
+      font-size: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background-color: #050506;
+      /* subtle vignette so the page edges fall into shadow */
+      background-image: radial-gradient(ellipse at 50% 0%, #14110d 0%, #090909 45%, #050506 100%);
+      background-attachment: fixed;
+    }
+
+    html, body {
+      overflow-x: auto;
+    }
+
+    #container {
+      max-width: 800px;
+      text-align: justify;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #e8b35a;
+      text-align: center;
+    }
+
+    h2 {
+      color: #e8b35a;
+      text-align: center;
+    }
+
+    h3 {
+      font-weight: bold;
+      color: #e6ddd0;
+      margin-bottom: 0.5em;
+    }
+
+    li {
+      margin: 3px 0px;
+      hyphens: auto;
+      text-align: justify;
+    }
+
+    pre {
+      font-family: 'Monotype.com', "Courier New", monospace;
+      font-size: 0.9em;
+      color: #d6cfc2;
+      background-color: #14110d;
+      border: 1px solid #2c2620;
+      border-radius: 4px;
+      padding: 0.5em;
+      overflow-x: auto;
+    }
+
+    a {
+      color: #e0a94a;
+      text-decoration: none;
+    }
+
+    a:link {
+      color: #e0a94a;
+    }
+
+    a:visited {
+      color: #c08a36;
+    }
+
+    a:hover {
+      color: #f6cf86;
+    }
+
+    .dataset {
+      font-variant: small-caps;
+    }
+
+    /* Big download button (amber torchlight). */
+    .download-btn {
+      display: inline-block;
+      padding: 0.7em 1.8em;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #1a140a !important;
+      background: #e8b35a;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+
+    .download-btn:link,
+    .download-btn:visited {
+      color: #1a140a;
+    }
+
+    .download-btn:hover {
+      background: #f6cf86;
+      color: #1a140a;
+    }
+
+    .center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .centerContent {
+      text-align: center;
+    }
+
+    td p {
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 5px;
+    }
+
+    table {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    /* Logos are dark-inked; sit them on a light card so they stay legible. */
+    .logo {
+      background: #ffffff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      vertical-align: middle;
+    }
+
+    /* TEMP: remove the dashed boxes once real content is in. */
+    .placeholder {
+      border: 1px dashed #555;
+      background: #111;
+      color: #888;
+      padding: 1em;
+      text-align: center;
+      margin: 1em auto;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="container">
+
+    <h1>The Sterkfontein Caves Dataset<br><span style="font-size: 0.6em; font-weight: normal;">A Novel View Rendering Challenge from the Cradle of Humankind</span></h1>
+    <h2>ECCV 2026</h2>
+
+    <!-- TODO: add homepage links (href) and affiliation logos. -->
+    <table class="center">
+      <tr>
+        <td>
+          <h3 style="text-align: left;">
+            <a href="https://iretonliu.com/" target="_blank">Ireton Liu</a><br>
+            <a href="https://www.brian-xu.com/" target="_blank">Brian Xu</a><br>
+            <a href="https://www.wits.ac.za/people/academic-a-z-listing/s/dominicstratfordwitsacza/" target="_blank">Dominic Stratford</a><br>
+            <a href="https://sdjames.me/" target="_blank">Steven James</a><br>
+            <a href="https://www.wits.ac.za/people/academic-a-z-listing/k/richardkleinwitsacza/" target="_blank">Richard Klein</a><br>
+            <a href="https://jamestompkin.com/" target="_blank">James Tompkin</a>
+          </h3>
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td style="text-align: center;">
+          <img src="./images/WitsLogo.png" width="150px">
+          <br>
+          <img src="./images/BrownCSLogo.svg" width="150px" style="display:inline-block; margin-top:14px;">
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- TODO: Resource links as thumbnail tiles (gftorf convention).
+         Put thumbnail images in ./images (e.g. paper.png, github-mark.svg, dataset.png). -->
+    <table class="center">
+      <tr>
+        <!-- TODO: re-enable once links are ready.
+        <td>
+          <a href="#" target="_blank">
+            <img src="./images/paper.png" style="height:150px;border:1px solid #555;">
+          </a>
+          <p><a href="#" target="_blank">Paper</a></p>
+        </td>
+        <td>
+          <a href="#" target="_blank">
+            <img src="./images/github-mark.svg" style="height:150px;border:1px solid #555;">
+          </a>
+          <p><a href="#" target="_blank">Code</a></p>
+        </td>
+        -->
+      </tr>
+    </table>
+
+    <!-- Teaser: all ten scenes (ground-truth references). -->
+    <div class="centerContent">
+      <img src="./images/allscenes_gt.jpg" style="width:100%;" alt="Ground-truth reference views of all ten Sterkfontein Caves scenes">
+    </div>
+
+    <h2>Abstract</h2>
+    <p class="center">
+      We introduce the challenging Sterkfontein Caves dataset comprising ten underground
+      scenes from a UNESCO World Heritage Site, and use it to find a new simple baseline
+      method that beats existing low-light reconstruction methods upon it. Each scene is of
+      complex surface geometry and high-frequency texture from cave rock structures,
+      including human-made markings on the rock face. The captured images exhibit varied or
+      uncontrolled lighting over a large dynamic range, with glare artefacts, and low
+      signal-to-noise ratios from the challenging dark real-world capture scenario. We
+      propose a view synthesis benchmark for low-light RAW and sRGB reconstruction. All
+      tested NeRF and Gaussian splatting baseline methods struggle on this data, with the
+      best performing method in terms of reliability and average PSNR being our Raw-Nerfacto
+      method. We discuss these errors in detail to find directions of future work for the
+      community in overcoming the significant challenges that remain in low-light high-detail
+      scenes.
+    </p>
+
+    <h2>Dataset</h2>
+    <div class="centerContent">
+      <a class="download-btn" href="#" target="_blank">Download Dataset</a>
+    </div>
+    <!-- TODO: Structure, file formats, license, and download instructions.
+         Link to the data host (Google Drive / OneDrive / S3 / Zenodo / etc.).
+    <p>
+      Placeholder details about contents, format, and licensing.
+    </p>
+    -->
+
+    <h2>Citation</h2>
+    <table class="center">
+      <tr>
+        <td>
+          <pre><code>@inproceedings{sterkfontein,
+    title     = {The Sterkfontein Caves Dataset: A Novel View Rendering
+                 Challenge from the Cradle of Humankind},
+    author    = {Liu, Ireton and Xu, Brian and Stratford, Dominic and
+                 James, Steven and Klein, Richard and Tompkin, James},
+    booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+    year      = {2026}
+}</code></pre>
+        </td>
+      </tr>
+    </table>
+
+    <!-- TODO: re-enable once acknowledgements are ready.
+    <h2>Acknowledgements</h2>
+    <p>
+      Placeholder acknowledgements.
+    </p>
+    -->
+
+  </div>
+</body>
+
+</html>
