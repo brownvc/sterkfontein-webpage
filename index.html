@@ -128,12 +128,26 @@ redirect_from: sterkfontein/
 
     .dataset { font-variant: small-caps; }
 
-    /* Author list: sans, comfortable spacing. */
-    .author-list {
-      text-align: left;
-      font-size: 1.12em;
-      line-height: 1.85;
+    /* Authors: centered flowing line with affiliation markers. */
+    .authors {
+      text-align: center;
+      font-size: 1.15em;
+      line-height: 1.9;
+      max-width: 720px;
+      margin: 0.4em auto 0.5em;
     }
+    .authors .author { white-space: nowrap; margin: 0 0.15em; }
+    .authors sup { color: var(--ink-dim); font-size: 0.68em; padding-left: 1px; }
+
+    .logos { text-align: center; margin: 1.2em 0 0.5em; }
+    .logos .logo-item { display: inline-block; margin: 0 24px; }
+    .logos .logo-item sup {
+      color: var(--ink-dim);
+      font-size: 0.9em;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .logos img { height: 50px; vertical-align: middle; }
 
     /* Big download button (amber torchlight). */
     .download-btn {
@@ -182,28 +196,18 @@ redirect_from: sterkfontein/
     <h1>The Sterkfontein Caves Dataset<span class="subtitle">A Novel View Rendering Challenge from the Cradle of Humankind</span></h1>
     <p class="venue">ECCV 2026</p>
 
-    <!-- TODO: add homepage links (href) and affiliation logos. -->
-    <table class="center">
-      <tr>
-        <td>
-          <div class="author-list">
-            <a href="https://iretonliu.com/" target="_blank">Ireton Liu</a><br>
-            <a href="https://www.brian-xu.com/" target="_blank">Brian Xu</a><br>
-            <a href="https://www.wits.ac.za/people/academic-a-z-listing/s/dominicstratfordwitsacza/" target="_blank">Dominic Stratford</a><br>
-            <a href="https://sdjames.me/" target="_blank">Steven James</a><br>
-            <a href="https://www.wits.ac.za/people/academic-a-z-listing/k/richardkleinwitsacza/" target="_blank">Richard Klein</a><br>
-            <a href="https://jamestompkin.com/" target="_blank">James Tompkin</a>
-          </div>
-        </td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td style="text-align: center;">
-          <img src="./images/WitsLogo.png" width="150px">
-          <br>
-          <img src="./images/BrownCSLogo.svg" width="150px" style="display:inline-block; margin-top:14px;">
-
-        </td>
-      </tr>
-    </table>
+    <div class="authors">
+      <span class="author"><a href="https://iretonliu.com/" target="_blank">Ireton Liu</a><sup>1</sup>,</span>
+      <span class="author"><a href="https://www.brian-xu.com/" target="_blank">Brian Xu</a><sup>2</sup>,</span>
+      <span class="author"><a href="https://www.wits.ac.za/people/academic-a-z-listing/s/dominicstratfordwitsacza/" target="_blank">Dominic Stratford</a><sup>1</sup>,</span>
+      <span class="author"><a href="https://sdjames.me/" target="_blank">Steven James</a><sup>1</sup>,</span>
+      <span class="author"><a href="https://www.wits.ac.za/people/academic-a-z-listing/k/richardkleinwitsacza/" target="_blank">Richard Klein</a><sup>1</sup>,</span>
+      <span class="author"><a href="https://jamestompkin.com/" target="_blank">James Tompkin</a><sup>2</sup></span>
+    </div>
+    <div class="logos">
+      <span class="logo-item"><sup>1</sup><img src="./images/WitsLogo.png" alt="University of the Witwatersrand"></span>
+      <span class="logo-item"><sup>2</sup><img src="./images/BrownCSLogo.svg" alt="Brown Computer Science"></span>
+    </div>
 
     <!-- TODO: Resource links as thumbnail tiles (gftorf convention).
          Put thumbnail images in ./images (e.g. paper.png, github-mark.svg, dataset.png). -->
