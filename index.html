@@ -171,6 +171,21 @@ redirect_from: sterkfontein/
       transform: translateY(-1px);
     }
 
+    /* "How to download" explainer panel. */
+    .howto {
+      text-align: left;
+      max-width: 680px;
+      margin: 1.8em auto 0;
+      background: #100d0a;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.1em 1.5em 1.3em;
+    }
+    .howto h3 { margin-top: 0.2em; }
+    .howto ol { margin: 0.6em 0; padding-left: 1.4em; }
+    .howto li { margin: 0.45em 0; }
+    .howto pre { margin: 0.6em 0 0.2em; }
+
     .center { margin-left: auto; margin-right: auto; }
     .centerContent { text-align: center; }
 
@@ -256,12 +271,19 @@ redirect_from: sterkfontein/
     <div class="centerContent">
       <a class="download-btn" href="https://app.globus.org/file-manager?origin_id=af25f346-0335-4cf9-ba7e-a74cdf582ce0" target="_blank" rel="noopener">Download Dataset</a>
     </div>
-    <!-- TODO: Structure, file formats, license, and download instructions.
-         Link to the data host (Google Drive / OneDrive / S3 / Zenodo / etc.).
-    <p>
-      Placeholder details about contents, format, and licensing.
-    </p>
-    -->
+
+    <div class="howto">
+      <h3>How to download</h3>
+      <p>The dataset is hosted on <a href="https://www.globus.org/" target="_blank" rel="noopener">Globus</a>, which transfers the whole collection to your computer in one step &mdash; you do <em>not</em> download files individually.</p>
+      <ol>
+        <li>Install <a href="https://www.globus.org/globus-connect-personal" target="_blank" rel="noopener">Globus Connect Personal</a> (free; Windows, macOS, Linux) to turn your computer into a Globus collection. If your institution already provides a Globus endpoint, you can use that instead.</li>
+        <li>Click <strong>Download Dataset</strong> above and sign in (free &mdash; via your institution, Google, or ORCID).</li>
+        <li>In the two-panel file manager, set your own computer as the destination, select everything at the root, and click <strong>Transfer</strong>.</li>
+      </ol>
+      <p>Globus copies the entire dataset recursively &mdash; parallelized, checksum-verified, and resumable if the connection drops.</p>
+      <p>Prefer the command line? With the <a href="https://docs.globus.org/cli/" target="_blank" rel="noopener">Globus CLI</a>:</p>
+      <pre><code>globus transfer af25f346-0335-4cf9-ba7e-a74cdf582ce0:/ &lt;your-endpoint-id&gt;:/ --recursive</code></pre>
+    </div>
 
     <h2>Citation</h2>
     <table class="center">
