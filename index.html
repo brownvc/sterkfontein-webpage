@@ -126,6 +126,17 @@ redirect_from: sterkfontein/
       overflow-x: auto;
     }
 
+    /* Inline code (not inside a <pre>). */
+    :not(pre) > code {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, "Courier New", monospace;
+      font-size: 0.88em;
+      color: #d6cfc2;
+      background-color: #14110d;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 0.08em 0.4em;
+    }
+
     .dataset { font-variant: small-caps; }
 
     /* Authors: centered flowing line with affiliation markers. */
@@ -181,10 +192,18 @@ redirect_from: sterkfontein/
       border-radius: 8px;
       padding: 1.1em 1.5em 1.3em;
     }
-    .howto h3 { margin-top: 0.2em; }
-    .howto ol { margin: 0.6em 0; padding-left: 1.4em; }
+    .howto h3 { margin-top: 0.2em; color: var(--accent); }
+    .howto h4 {
+      font-family: "minion-3", Georgia, serif;
+      font-weight: normal;
+      color: var(--ink-soft);
+      font-size: 1.13em;
+      margin: 1.4em 0 0.35em;
+    }
+    .howto ol { margin: 0.5em 0; padding-left: 1.4em; }
     .howto li { margin: 0.45em 0; }
-    .howto pre { margin: 0.6em 0 0.2em; }
+    .howto p { margin: 0.3em 0 0.5em; }
+    .howto pre { margin: 0.5em 0 0.2em; }
 
     .center { margin-left: auto; margin-right: auto; }
     .centerContent { text-align: center; }
@@ -274,15 +293,41 @@ redirect_from: sterkfontein/
 
     <div class="howto">
       <h3>How to download</h3>
-      <p>The dataset is hosted on <a href="https://www.globus.org/" target="_blank" rel="noopener">Globus</a>, which transfers the whole collection to your computer in one step &mdash; you do <em>not</em> download files individually.</p>
+      <p>The dataset is hosted on <a href="https://www.globus.org/" target="_blank" rel="noopener">Globus</a>, which transfers the whole collection to your computer in one step &mdash; you do <em>not</em> download files individually. Pick whichever option suits you; all three copy the full dataset recursively (parallelized, checksum-verified, and resumable if the connection drops).</p>
+
+      <h4>Option 1 &mdash; Web app (no coding)</h4>
       <ol>
         <li>Install <a href="https://www.globus.org/globus-connect-personal" target="_blank" rel="noopener">Globus Connect Personal</a> (free; Windows, macOS, Linux) to turn your computer into a Globus collection. If your institution already provides a Globus endpoint, you can use that instead.</li>
         <li>Click <strong>Download Dataset</strong> above and sign in (free &mdash; via your institution, Google, or ORCID).</li>
         <li>In the two-panel file manager, set your own computer as the destination, select everything at the root, and click <strong>Transfer</strong>.</li>
       </ol>
-      <p>Globus copies the entire dataset recursively &mdash; parallelized, checksum-verified, and resumable if the connection drops.</p>
-      <p>Prefer the command line? With the <a href="https://docs.globus.org/cli/" target="_blank" rel="noopener">Globus CLI</a>:</p>
-      <pre><code>globus transfer af25f346-0335-4cf9-ba7e-a74cdf582ce0:/ &lt;your-endpoint-id&gt;:/ --recursive</code></pre>
+
+      <h4>Option 2 &mdash; Command line (Globus CLI)</h4>
+      <p>Install with <code>pip install globus-cli</code>, run <code>globus login</code>, then transfer recursively:</p>
+      <pre><code>globus transfer af25f346-0335-4cf9-ba7e-a74cdf582ce0:/ YOUR-ENDPOINT-ID:/ --recursive</code></pre>
+
+      <h4>Option 3 &mdash; Python (Globus SDK)</h4>
+      <p>Install with <code>pip install globus-sdk</code>, then:</p>
+      <pre><code>import globus_sdk
+
+SOURCE    = "af25f346-0335-4cf9-ba7e-a74cdf582ce0"  # Sterkfontein dataset collection
+DEST      = "YOUR-ENDPOINT-ID"                       # your Globus Connect Personal collection
+CLIENT_ID = "YOUR-CLIENT-ID"                         # register an app at app.globus.org/settings/developers
+
+# One-time login: opens a URL, paste back the code it gives you
+auth = globus_sdk.NativeAppAuthClient(CLIENT_ID)
+auth.oauth2_start_flow(requested_scopes=globus_sdk.scopes.TransferScopes.all)
+print("Log in here:", auth.oauth2_get_authorize_url())
+tokens = auth.oauth2_exchange_code_for_tokens(input("Auth code: ").strip())
+access_token = tokens.by_resource_server["transfer.api.globus.org"]["access_token"]
+
+tc = globus_sdk.TransferClient(authorizer=globus_sdk.AccessTokenAuthorizer(access_token))
+
+# Recursively transfer the entire dataset
+data = globus_sdk.TransferData(tc, SOURCE, DEST, label="Sterkfontein dataset")
+data.add_item("/", "/sterkfontein/", recursive=True)
+task = tc.submit_transfer(data)
+print("Submitted - track at https://app.globus.org/activity/" + task["task_id"])</code></pre>
     </div>
 
     <h2>Citation</h2>
