@@ -54,6 +54,20 @@
     '  for (int k = 0; k < 5; k++) { v += a * noise(p); p = p * 2.03 + 17.0; a *= 0.5; }',
     '  return v;',
     '}',
+    // Ridged multifractal: fold each octave about its midline and let
+    // ridges gate the next octave -> sharp crests and canyon creases
+    // that plain fbm (Gaussian-ish, always smooth) can never produce.
+    'float ridge(float h){ h = 1.0 - abs(2.0 * h - 1.0); return h * h; }',
+    'float rfbm(vec2 p){',
+    '  float v = 0.0, a = 0.5, w = 1.0;',
+    '  for (int k = 0; k < 5; k++) {',
+    '    float r = ridge(noise(p));',
+    '    v += a * r * w;',
+    '    w = clamp(r * 2.0, 0.0, 1.0);',
+    '    p = p * 2.07 + 13.0; a *= 0.5;',
+    '  }',
+    '  return v;',
+    '}',
     // 1D value noise for the torch flicker (hash-based: never repeats).
     'float hash1(float t){ return fract(sin(t * 127.1) * 43758.5453); }',
     'float noise1(float t){',
@@ -86,7 +100,7 @@
     '}',
 
     // Rock relief: broad forms + fine grain.
-    'float height(vec2 p){ return fbm(p * 0.02) * 0.5 + fbm(p * 0.07) * 0.35 + fbm(p * 0.18) * 0.15; }',
+    'float height(vec2 p){ return rfbm(p * 0.016) * 1.1 + fbm(p * 0.07) * 0.25 + fbm(p * 0.18) * 0.1; }',
     // Tunnel wall: nearest the viewer at the viewport edge, plunging
     // into the page as it approaches the craggy lip — the page is the
     // mouth of a dark passage. q: 0 at edge (near) -> 1 at lip (deep).
@@ -138,13 +152,15 @@
     '  vec3 H = normalize(L + V);',
     '  float spec = pow(max(dot(N, H), 0.0), 24.0) * 0.35;',
 
-    // Albedo: multi-scale noise mixes three mineral tones.
-    '  float n1 = fbm(px * 0.006 + 53.0);',   // broad mineral patches
-    '  float n2 = fbm(px * 0.05 + 97.0);',    // fine banding
-    '  float n3 = noise(px * 0.45);',         // per-pixel speckle
-    '  vec3 albedo = mix(u_rock, u_rockB, smoothstep(0.38, 0.62, n1));',
-    '  albedo = mix(albedo, u_rockC, smoothstep(0.3, 0.8, n2) * 0.8);',
-    '  albedo *= 0.65 + 0.6 * n3;',
+    // Albedo: domain-warped strata (marbled mineral patches with sharp
+    // interfaces) + ridged veins + per-pixel speckle.
+    '  vec2 warp = vec2(fbm(px * 0.008 + 23.0), fbm(px * 0.008 + 71.0));',
+    '  float n1 = fbm(px * 0.006 + warp * 6.0 + 53.0);',   // marbled strata
+    '  float n2 = rfbm(px * 0.03 + warp * 3.0);',          // ridged veins
+    '  float n3 = noise(px * 0.45);',                      // speckle
+    '  vec3 albedo = mix(u_rock, u_rockB, smoothstep(0.42, 0.55, n1));',
+    '  albedo = mix(albedo, u_rockC, clamp(pow(n2, 3.0) * 1.8, 0.0, 1.0));',
+    '  albedo *= 0.6 + 0.65 * n3;',
 
     // Depth kills reflectance and ambient: the wall falls into true
     // darkness as it plunges toward the lip.
