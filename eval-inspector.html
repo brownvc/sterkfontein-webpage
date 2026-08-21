@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/diw5pgv.css">
 
-<!-- Shared BVC project-page styles + JS (bar, logo registry, theme). -->
+<!-- Shared BVC project-page styles (no project.js: this tool page has no
+     site bar; the theme still follows the shared localStorage choice). -->
 <link rel="stylesheet" href="https://visual.cs.brown.edu/projects/shared/project.css">
-<script defer src="https://visual.cs.brown.edu/projects/shared/project.js"></script>
 
 <!-- PER-PAGE SKIN: same cave skin as the project page (tokens only). -->
 <style id="page-skin">
@@ -140,7 +140,7 @@ figcaption { color:var(--ink-muted); font-size:.75rem; font-family:var(--mono); 
 .card.missing .ph { aspect-ratio:4/3; display:grid; place-items:center; color:var(--ink-muted);
   font-family:var(--mono); font-size:.75rem; }
 #lb { --accent:#e8b35a; --ink:#d8d2c7; --ink-muted:#9c948a; --bg-soft:#100d0a; --border:#2c2620;
-  position:fixed; inset:0; z-index:50; background:rgba(10,8,6,.97); display:none; flex-direction:column; }
+  position:fixed; inset:0; z-index:9999; background:rgba(10,8,6,.97); display:none; flex-direction:column; }
 #lb.open { display:flex; }
 #lbview { flex:1; min-height:0; overflow:hidden; position:relative; cursor:pointer; touch-action:none; }
 #lbview img { width:100%; height:100%; object-fit:contain; display:block; transform-origin:0 0; }
