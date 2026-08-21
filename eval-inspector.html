@@ -464,7 +464,8 @@ function transformURL(cid, base, tag) {
       cx.putImageData(id, 0, 0);
       cv.toBlob(b => resolve(URL.createObjectURL(b)), "image/png");
     };
-    im.src = base;
+    if (tag === "full") fetchFull(base).then(o => { im.src = o; }).catch(() => {});
+    else im.src = base;
   });
   return PROC[key];
 }
@@ -619,14 +620,39 @@ function lbItem() {
            prev: el.querySelector("img").src, full: el.dataset.full,
            name: el.querySelector("figcaption").textContent.trim(), nums: "" };
 }
-const FULLREADY = new Set();
+// The Globus endpoint sends no caching headers, so the browser refetches
+// evicted images. Own the cache: fetch each PNG once, keep blob URLs (LRU).
+const FULLMAP = new Map();
+const FULLCAP = 16;
+const FETCHING = new Map();
+function fullGet(url) {
+  const u = FULLMAP.get(url);
+  if (u) { FULLMAP.delete(url); FULLMAP.set(url, u); }
+  return u;
+}
+function fetchFull(url) {
+  const c = fullGet(url);
+  if (c) return Promise.resolve(c);
+  if (FETCHING.has(url)) return FETCHING.get(url);
+  const p = fetch(url).then(r => r.blob()).then(b => {
+    const o = URL.createObjectURL(b);
+    FULLMAP.set(url, o);
+    while (FULLMAP.size > FULLCAP) {
+      const k = FULLMAP.keys().next().value;
+      URL.revokeObjectURL(FULLMAP.get(k)); FULLMAP.delete(k);
+    }
+    FETCHING.delete(url);
+    return o;
+  }).catch(e => { FETCHING.delete(url); throw e; });
+  FETCHING.set(url, p);
+  return p;
+}
 function loadFull(url, cur, after) {
-  if (FULLREADY.has(url)) { lbImg.src = url; if (after) after(); lbPrefetch(); return; }
-  const im = new Image();
-  im.crossOrigin = "anonymous";
-  im.onload = () => { FULLREADY.add(url);
-    if (cur()) { lbImg.src = url; if (after) after(); } lbPrefetch(); };
-  im.src = url;
+  const c = fullGet(url);
+  if (c) { lbImg.src = c; if (after) after(); lbPrefetch(); return; }
+  fetchFull(url).then(o => {
+    if (cur()) { lbImg.src = o; if (after) after(); } lbPrefetch();
+  }).catch(() => {});
 }
 function lbPrefetch() {  // warm the neighbors so arrow-walking has no wait
   if (!lb.classList.contains("open")) return;
@@ -637,10 +663,7 @@ function lbPrefetch() {  // warm the neighbors so arrow-walking has no wait
       const im = IMGS[el.dataset.cid];
       u = (PROTO !== "strict" && im.fullCalib) ? im.fullCalib : im.full;
     } else u = el.dataset.full;
-    if (u && !FULLREADY.has(u)) {
-      const pim = new Image(); pim.crossOrigin = "anonymous";
-      pim.onload = () => FULLREADY.add(u); pim.src = u;
-    }
+    if (u) fetchFull(u).catch(() => {});
   }
 }
 function lbRefreshItem() {
@@ -652,7 +675,7 @@ function lbRefreshItem() {
   const cur = () => lb.classList.contains("open") && lbIdx === myIdx
                     && PROTO === myProto && lbOnRef === myRef;
   if (lbOnRef) {
-    if (!FULLREADY.has(REFS_FULL[it.scene])) lbImg.src = REFS[it.scene];
+    if (!fullGet(REFS_FULL[it.scene])) lbImg.src = REFS[it.scene];
     loadFull(REFS_FULL[it.scene], cur);
     return;
   }
@@ -660,11 +683,11 @@ function lbRefreshItem() {
     const im = IMGS[it.cid];
     const prevBase = (PROTO !== "strict" && im.calib) ? im.calib : im.strict;
     const fullBase = (PROTO !== "strict" && im.fullCalib) ? im.fullCalib : im.full;
-    if (!FULLREADY.has(fullBase)) lbImg.src = prevBase;
+    if (!fullGet(fullBase)) lbImg.src = prevBase;
     loadFull(fullBase, cur, () =>
       transformURL(it.cid, fullBase, "full").then(u => { if (u && cur()) lbImg.src = u; }));
   } else {
-    if (!FULLREADY.has(it.full)) lbImg.src = it.prev;
+    if (!fullGet(it.full)) lbImg.src = it.prev;
     loadFull(it.full, cur);
   }
 }
