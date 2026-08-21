@@ -55,7 +55,7 @@ main.project { padding: 2rem 2.5rem 6rem; }
   --up:#7fb069; --down:#c0564a; --warn:#c9a227; }
 main.project { max-width:1320px; margin:0 auto; }
 .wrap { margin:0 auto; }
-.lede { color:var(--ink-muted); max-width:65ch; line-height:1.55; margin:0 0 1rem; }
+.lede { color:var(--ink-muted); max-width:70ch; line-height:1.55; margin:0 0 .9rem; }
 .lede b { color:var(--ink); }
 .lede a { color:var(--accent); }
 #bar { position:sticky; top:0; z-index:5; background:color-mix(in srgb,var(--bg) 92%,transparent);
@@ -78,7 +78,7 @@ main.project { max-width:1320px; margin:0 auto; }
 .twrap { overflow-x:auto; margin:1rem 0 1.4rem; }
 .sechead { font-size:1.7rem; margin:2.2rem 0 .6rem;
   padding-top:1.2rem; border-top:1px solid var(--border); }
-.subhead { font-size:1.15rem; margin:1.4rem 0 .4rem;
+.subhead { font-size:1.15rem; margin:1.6rem 0 .45rem;
   color:var(--accent); }
 .mtable { border-collapse:collapse; font-family:var(--mono); font-size:.66rem; }
 .mtable th, .mtable td { border:1px solid var(--border); padding:.28rem .45rem;
@@ -96,7 +96,7 @@ main.project { max-width:1320px; margin:0 auto; }
 .dl a { color:var(--accent); }
 .dl code { font-family:var(--mono); font-size:.78rem; background:var(--bg-soft);
   padding:.05rem .35rem; border-radius:3px; }
-.ctrl { color:var(--ink-muted); font-size:.85rem; line-height:1.7; margin:.3rem 0 0 1.2rem; padding:0; }
+.ctrl { color:var(--ink-muted); font-size:.85rem; line-height:1.65; margin:0 0 0 1.2rem; padding:0; }
 .ctrl b { color:var(--ink); font-family:var(--mono); font-size:.8rem; }
 #explain .pwarn { color:var(--warn); }
 .psep { width:1px; align-self:stretch; background:var(--border); margin:0 .6rem; }
@@ -175,8 +175,7 @@ reference, under evaluation protocols you can switch.</p>
 others are baselines as run for the paper (<a href="#refs">references</a> at the bottom). A
 <span class="kind raw">raw</span> chip on a card means the method reconstructs the scene in
 the sensor's native raw color space; <span class="kind srgb">srgb</span> means it works on
-developed 8-bit images. Grid thumbnails are compressed previews for navigation; every
-fullscreen image is a lossless PNG, loaded on demand.</p>
+developed 8-bit images.</p>
 <h3 class="subhead">Controls</h3>
 <ul class="ctrl">
 <li><b>click a render</b> &mdash; toggle ("blink") it against the reference</li>
@@ -188,6 +187,8 @@ fullscreen image is a lossless PNG, loaded on demand.</p>
 <b>&larr;/&rarr;</b> walk methods &middot; <b>Esc</b> close</li>
 <li>the number on each card is PSNR under the selected protocol; the small delta is the
 change versus calibrated</li>
+<li>grid thumbnails are compressed previews for navigation; every fullscreen image is a
+lossless PNG, loaded on demand</li>
 </ul>
 <h2 class="sechead">Quantitative results</h2>
 <h3 class="subhead">Linear sRGB evaluation</h3>
