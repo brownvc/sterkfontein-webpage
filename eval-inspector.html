@@ -557,10 +557,13 @@ function lbItem() {
            prev: el.querySelector("img").src, full: el.dataset.full,
            name: el.querySelector("figcaption").textContent.trim(), nums: "" };
 }
+const FULLREADY = new Set();
 function loadFull(url, cur, after) {
+  if (FULLREADY.has(url)) { lbImg.src = url; if (after) after(); lbPrefetch(); return; }
   const im = new Image();
   im.crossOrigin = "anonymous";
-  im.onload = () => { if (cur()) { lbImg.src = url; if (after) after(); } lbPrefetch(); };
+  im.onload = () => { FULLREADY.add(url);
+    if (cur()) { lbImg.src = url; if (after) after(); } lbPrefetch(); };
   im.src = url;
 }
 function lbPrefetch() {  // warm the neighbors so arrow-walking has no wait
@@ -572,7 +575,10 @@ function lbPrefetch() {  // warm the neighbors so arrow-walking has no wait
       const im = IMGS[el.dataset.cid];
       u = (PROTO !== "strict" && im.fullCalib) ? im.fullCalib : im.full;
     } else u = el.dataset.full;
-    if (u) { const pim = new Image(); pim.crossOrigin = "anonymous"; pim.src = u; }
+    if (u && !FULLREADY.has(u)) {
+      const pim = new Image(); pim.crossOrigin = "anonymous";
+      pim.onload = () => FULLREADY.add(u); pim.src = u;
+    }
   }
 }
 function lbRefreshItem() {
@@ -584,7 +590,7 @@ function lbRefreshItem() {
   const cur = () => lb.classList.contains("open") && lbIdx === myIdx
                     && PROTO === myProto && lbOnRef === myRef;
   if (lbOnRef) {
-    lbImg.src = REFS[it.scene];
+    if (!FULLREADY.has(REFS_FULL[it.scene])) lbImg.src = REFS[it.scene];
     loadFull(REFS_FULL[it.scene], cur);
     return;
   }
@@ -592,11 +598,11 @@ function lbRefreshItem() {
     const im = IMGS[it.cid];
     const prevBase = (PROTO !== "strict" && im.calib) ? im.calib : im.strict;
     const fullBase = (PROTO !== "strict" && im.fullCalib) ? im.fullCalib : im.full;
-    lbImg.src = prevBase;
+    if (!FULLREADY.has(fullBase)) lbImg.src = prevBase;
     loadFull(fullBase, cur, () =>
       transformURL(it.cid, fullBase, "full").then(u => { if (u && cur()) lbImg.src = u; }));
   } else {
-    lbImg.src = it.prev;
+    if (!FULLREADY.has(it.full)) lbImg.src = it.prev;
     loadFull(it.full, cur);
   }
 }
