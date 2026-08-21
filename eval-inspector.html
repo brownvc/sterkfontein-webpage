@@ -191,6 +191,15 @@ change versus calibrated</li>
 lossless PNG, loaded on demand</li>
 </ul>
 <h2 class="sechead">Quantitative results</h2>
+<p class="lede">Renders are scored under the <b>calibrated</b> protocol, which brings each
+render into the reference's geometry and color space, and under two fitted radiometric
+variants that we keep separate because they forgive different things: <b>cal&nbsp;+&nbsp;WB</b>
+allows only what a physical capture error can produce (a per-channel white-balance gain and
+black-level offset), while <b>cal&nbsp;+&nbsp;affine</b> is an unconstrained per-channel gain
+and offset that can also absorb color differences no camera setting explains. The gap between
+the two measures exactly that extra forgiveness. A <b>raw-space evaluation</b> further below
+compares the raw-output methods directly against the sensor measurements, with no development
+or exposure normalization at all.</p>
 <h3 class="subhead">Linear sRGB evaluation</h3>
 <div id="bar">
 <div class="protos">
