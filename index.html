@@ -142,25 +142,25 @@ redirect_from: sterkfontein/
     <section id="dataset-section">
       <h2 id="dataset">Dataset</h2>
       <div class="centerContent">
-        <a class="download-btn" href="https://app.globus.org/file-manager?origin_id=d5e8d614-aa93-4f3e-84a9-516b6013ed9a&origin_path=%2F0.9%2F" target="_blank" rel="noopener">Download Dataset</a>
+        <a class="download-btn" href="https://app.globus.org/file-manager?origin_id=d5e8d614-aa93-4f3e-84a9-516b6013ed9a&origin_path=%2F0.9.1%2F" target="_blank" rel="noopener">Download Dataset</a>
       </div>
 
       <div class="panel">
         <h3>How to download</h3>
-        <p>The dataset is hosted on <a href="https://www.globus.org/" target="_blank" rel="noopener">Globus</a>, which transfers the whole collection to your computer in one step &mdash; you do <em>not</em> download files individually. Pick whichever option suits you; all three copy the full dataset recursively (parallelized, checksum-verified, and resumable if the connection drops). The collection stores each published dataset version in its own frozen directory. <strong>Download <code>/0.9/</code></strong>, the current version; earlier releases (<code>/0.1/</code>, <code>/0.2/</code>) remain available so that results scored against them stay reproducible. <code>VERSIONS.txt</code> at the collection root describes every version, and <code>CHANGELOG.md</code> inside each version lists its changes.</p>
+        <p>The dataset is hosted on <a href="https://www.globus.org/" target="_blank" rel="noopener">Globus</a>, which transfers the whole collection to your computer in one step &mdash; you do <em>not</em> download files individually. Pick whichever option suits you; all three copy the full dataset recursively (parallelized, checksum-verified, and resumable if the connection drops). The collection stores each published dataset version in its own frozen directory. <strong>Download <code>/0.9.1/</code></strong>, the current version; earlier releases (<code>/0.1/</code>, <code>/0.2/</code>, <code>/0.9/</code>) remain available so that results scored against them stay reproducible. <code>VERSIONS.txt</code> at the collection root describes every version, and <code>CHANGELOG.md</code> inside each version lists its changes.</p>
 
         <h4>Option 1 &mdash; Web app (no coding)</h4>
         <ol>
           <li>Install <a href="https://www.globus.org/globus-connect-personal" target="_blank" rel="noopener">Globus Connect Personal</a> (free; Windows, macOS, Linux) to turn your computer into a Globus collection. If your institution already provides a Globus endpoint, you can use that instead.</li>
           <li>Click <strong>Download Dataset</strong> above and sign in (free &mdash; via your institution, Google, or ORCID).</li>
-          <li>In the two-panel file manager, set your own computer as the destination, open the <code>0.9</code> folder (the button above lands there), select everything, and click <strong>Transfer</strong>.</li>
+          <li>In the two-panel file manager, set your own computer as the destination, open the <code>0.9.1</code> folder (the button above lands there), select everything, and click <strong>Transfer</strong>.</li>
         </ol>
 
         <p>The dataset&rsquo;s full documentation (scene table, formats, evaluation protocol, per-scene notes) is the code repository&rsquo;s README (repository public soon at <code>github.com/brownvc/sterkfontein-nvs</code>); after downloading, <code>python scripts/verify_dataset.py --root /path/to/sterkfontein</code> checks your copy end-to-end against the shipped checksums.</p>
 
         <h4>Option 2 &mdash; Command line (Globus CLI)</h4>
         <p>Install with <code>pip install globus-cli</code>, run <code>globus login</code>, then transfer recursively:</p>
-        <pre><code>globus transfer d5e8d614-aa93-4f3e-84a9-516b6013ed9a:/0.9/ YOUR-ENDPOINT-ID:/sterkfontein/ --recursive</code></pre>
+        <pre><code>globus transfer d5e8d614-aa93-4f3e-84a9-516b6013ed9a:/0.9.1/ YOUR-ENDPOINT-ID:/sterkfontein/ --recursive</code></pre>
 
         <h4>Option 3 &mdash; Python (Globus SDK)</h4>
         <p>Install with <code>pip install globus-sdk</code>, then:</p>
@@ -181,7 +181,7 @@ tc = globus_sdk.TransferClient(authorizer=globus_sdk.AccessTokenAuthorizer(acces
 
 # Recursively transfer the entire dataset
 data = globus_sdk.TransferData(tc, SOURCE, DEST, label="Sterkfontein dataset")
-data.add_item("/0.9/", "/sterkfontein/", recursive=True)
+data.add_item("/0.9.1/", "/sterkfontein/", recursive=True)
 task = tc.submit_transfer(data)
 print("Submitted - track at https://app.globus.org/activity/" + task["task_id"])</code></pre>
       </div>
